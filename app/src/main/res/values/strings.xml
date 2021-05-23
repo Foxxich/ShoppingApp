@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CartApp</string>
+    <string name="games_list">GAMES LIST</string>
+    <string name="maps">Maps</string>
+    <string name="refresh">refresh</string>
+    <string name="_1_0_z">1.0 zł</string>
+    <string name="gra">Gra</string>
+    <string name="title_activity_maps">Map</string>
+</resources>
