@@ -20,7 +20,7 @@ class LoginActivity : AppCompatActivity() {
         val prefs =  getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE) //check if user logged before
         val name =
             prefs.getString("name", "No name defined") //"No name defined" is the default value.
-        if(name != "No name defined") { //case if user logged before
+        if(name != null && name != "No name defined") { //case if user logged before
             val intent = Intent(this, MainActivity::class.java).apply {
                 putExtra("userName", name)
             }
