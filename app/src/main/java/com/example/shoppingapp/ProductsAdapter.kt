@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.shoppingapp.model.ProductsModel
 import com.example.shoppingapp.eventbus.UpdateCartEvent
 import com.example.shoppingapp.listener.ICartLoadListener
-import com.example.shoppingapp.listener.IRecyclerClickListener
 import com.example.shoppingapp.listener.ItemListener
 import com.example.shoppingapp.model.CartModel
 import com.google.firebase.database.DataSnapshot
@@ -23,32 +23,19 @@ import java.lang.StringBuilder
 
 class ProductsAdapter(private val context: Context, private val list: List<ProductsModel>, private val cartListener: ICartLoadListener, private val itemListener: ItemListener, private val userName: String) : RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder>() {
 
-    inner class ProductsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class ProductsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var imageView: ImageView? = null
         var txtName: TextView? = null
         var txtPrice: TextView? = null
-
-        private var clickListener:IRecyclerClickListener? = null
-
-        fun setClickListener(clickListener: IRecyclerClickListener) {
-            this.clickListener = clickListener
-        }
 
         init {
             imageView = itemView.findViewById(R.id.imageView) as ImageView
             txtName = itemView.findViewById(R.id.txtName) as TextView
             txtPrice = itemView.findViewById(R.id.txtPrice) as TextView
 
-            itemView.setOnClickListener(this)
-
-            itemView.findViewById<ImageView>(R.id.imageView).setOnLongClickListener {
+            itemView.findViewById<LinearLayout>(R.id.game_item_layout).setOnClickListener {
                 itemListener.clickedLong(adapterPosition)
-                true
             }
-        }
-
-        override fun onClick(v: View?) {
-            clickListener!!.onItemClickListener(v, adapterPosition)
         }
     }
 
@@ -66,14 +53,9 @@ class ProductsAdapter(private val context: Context, private val list: List<Produ
                 .into(holder.imageView!!)
         holder.txtName!!.text  = StringBuilder().append(list[position].name)
         holder.txtPrice!!.text  = StringBuilder().append(list[position].price+" zł")
-
-        holder.setClickListener(object:IRecyclerClickListener{
-            override fun onItemClickListener(view: View?, position: Int) {
-                addToCart(list[position])
-            }
-        })
     }
 
+    //TODO:insert this method to UserData.class
     private fun addToCart(productsModel: ProductsModel) {
 
         val userCart = FirebaseDatabase.getInstance()

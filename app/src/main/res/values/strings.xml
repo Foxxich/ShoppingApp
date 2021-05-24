@@ -8,4 +8,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="logout">Logout</string>
     <string name="account">Account</string>
+    <string name="buy">Buy</string>
+    <string name="itemnamedetails">itemName</string>
 </resources>

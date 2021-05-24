@@ -109,8 +109,8 @@ class AccountActivity : AppCompatActivity() {
             val editor =
                 getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE).edit()
             editor.putString("name", accountName)
-            editor.putString("pass", accountPassword)
-            editor.putString("email", accountEmail)
+//            editor.putString("pass", accountPassword) //TODO:pass to md5  or token
+//            editor.putString("email", accountEmail)
             editor.apply()
             startActivity(intent)
         } else {

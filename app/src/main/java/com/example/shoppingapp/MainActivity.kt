@@ -14,6 +14,7 @@ import com.example.shoppingapp.listener.ICartLoadListener
 import com.example.shoppingapp.listener.ItemListener
 import com.example.shoppingapp.listener.ProductsLoadListener
 import com.example.shoppingapp.menu_activities.MapsActivity
+import com.example.shoppingapp.menu_activities.UserData
 import com.example.shoppingapp.model.CartModel
 import com.example.shoppingapp.model.ProductsModel
 import com.google.android.material.snackbar.Snackbar
@@ -93,7 +94,10 @@ class MainActivity : AppCompatActivity(), ProductsLoadListener, ICartLoadListene
             }
             R.id.account_item ->
             {
-                //TODO: new activity
+                val intent = Intent(this, UserData::class.java).apply {
+                    putExtra("userName", accountName)
+                }
+                startActivity(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)

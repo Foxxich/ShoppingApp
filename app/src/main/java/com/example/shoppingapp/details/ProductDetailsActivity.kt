@@ -31,7 +31,7 @@ class ProductDetailsActivity : AppCompatActivity() {
                         try {
                             //TODO: handle with date on our activity!
                             Picasso.get().load(itemData.image).into(findViewById<ImageView>(
-                                R.id.imageView2
+                                R.id.itemImageView
                             ))
                         } catch (e: Exception) {
                             e.printStackTrace()

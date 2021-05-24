@@ -10,6 +10,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/game_item_layout"
         android:gravity="center"
         android:padding="16dp"
         android:layout_width="match_parent"
