@@ -6,4 +6,6 @@
     <string name="_1_0_z">1.0 zł</string>
     <string name="gra">Gra</string>
     <string name="title_activity_maps">Map</string>
+    <string name="logout">Logout</string>
+    <string name="account">Account</string>
 </resources>

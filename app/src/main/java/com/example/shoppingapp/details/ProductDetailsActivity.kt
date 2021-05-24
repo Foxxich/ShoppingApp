@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.cartapp.model.ProductsModel
+import com.example.shoppingapp.model.ProductsModel
 import com.example.shoppingapp.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

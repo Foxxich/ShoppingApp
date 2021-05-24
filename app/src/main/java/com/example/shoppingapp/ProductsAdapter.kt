@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.cartapp.model.ProductsModel
+import com.example.shoppingapp.model.ProductsModel
 import com.example.shoppingapp.eventbus.UpdateCartEvent
 import com.example.shoppingapp.listener.ICartLoadListener
 import com.example.shoppingapp.listener.IRecyclerClickListener
@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener
 import org.greenrobot.eventbus.EventBus
 import java.lang.StringBuilder
 
-class ProductsAdapter(private val context: Context, private val list: List<ProductsModel>, private val cartListener: ICartLoadListener, private val itemListener: ItemListener) : RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder>() {
+class ProductsAdapter(private val context: Context, private val list: List<ProductsModel>, private val cartListener: ICartLoadListener, private val itemListener: ItemListener, private val userName: String) : RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder>() {
 
     inner class ProductsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         var imageView: ImageView? = null
@@ -75,9 +75,10 @@ class ProductsAdapter(private val context: Context, private val list: List<Produ
     }
 
     private fun addToCart(productsModel: ProductsModel) {
+
         val userCart = FirebaseDatabase.getInstance()
                 .getReference("Cart")
-                .child("UNIQUE_USER_ID")
+                .child(userName)
 
         userCart.child(productsModel.key!!)
                 .addListenerForSingleValueEvent(object:ValueEventListener{

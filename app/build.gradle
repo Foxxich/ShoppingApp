@@ -59,10 +59,17 @@ dependencies {
     //eventbus
     implementation 'org.greenrobot:eventbus:3.2.0'
 
-    //for google maps api
-    implementation 'com.google.android.gms:play-services:12.0.1'
-
     //for testing of images
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    implementation 'com.google.firebase:firebase-core:19.0.0'
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation  'com.firebaseui:firebase-ui-auth:6.2.0'
+    implementation 'com.google.firebase:firebase-analytics:19.0.0'
+
+    // Declare the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-auth-ktx'
 
 }

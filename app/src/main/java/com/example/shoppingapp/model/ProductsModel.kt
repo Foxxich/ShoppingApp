@@ -1,4 +1,4 @@
-package com.example.cartapp.model
+package com.example.shoppingapp.model
 
 class ProductsModel {
     var key:String?=null
