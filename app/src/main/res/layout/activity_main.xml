@@ -35,6 +35,7 @@
             <ImageView
                 android:src="@drawable/cart"
                 android:id="@+id/cartButton"
+                android:onClick="cartShow"
                 android:layout_gravity="center_vertical"
                 android:layout_width="40dp"
                 android:layout_height="40dp"/>

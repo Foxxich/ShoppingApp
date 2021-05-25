@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -18,6 +19,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.nex3z.notificationbadge.NotificationBadge
 import org.greenrobot.eventbus.EventBus
 import java.lang.StringBuilder
 
@@ -32,7 +34,6 @@ class ProductsAdapter(private val context: Context, private val list: List<Produ
             imageView = itemView.findViewById(R.id.imageView) as ImageView
             txtName = itemView.findViewById(R.id.txtName) as TextView
             txtPrice = itemView.findViewById(R.id.txtPrice) as TextView
-
             itemView.findViewById<LinearLayout>(R.id.game_item_layout).setOnClickListener {
                 itemListener.clickedLong(adapterPosition)
             }
@@ -55,7 +56,7 @@ class ProductsAdapter(private val context: Context, private val list: List<Produ
         holder.txtPrice!!.text  = StringBuilder().append(list[position].price+" zł")
     }
 
-    //TODO:insert this method to UserData.class
+    //TODO:insert this method to UserData.class and change it!
     private fun addToCart(productsModel: ProductsModel) {
 
         val userCart = FirebaseDatabase.getInstance()

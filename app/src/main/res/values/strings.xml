@@ -10,4 +10,8 @@
     <string name="account">Account</string>
     <string name="buy">Buy</string>
     <string name="itemnamedetails">itemName</string>
+    <string name="game">Game</string>
+    <string name="itemprice">itemPrice</string>
+    <string name="example_text">Example text</string>
+    <string name="buy_it">BUY IT</string>
 </resources>

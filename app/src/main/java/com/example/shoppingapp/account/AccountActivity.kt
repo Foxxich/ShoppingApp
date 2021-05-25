@@ -21,7 +21,6 @@ import com.google.firebase.ktx.Firebase
 class AccountActivity : AppCompatActivity() {
 
     private lateinit var activationType : String
-    var databaseReference: DatabaseReference? = null
     private lateinit var auth: FirebaseAuth
 
     private var accountName : String = ""
@@ -109,8 +108,6 @@ class AccountActivity : AppCompatActivity() {
             val editor =
                 getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE).edit()
             editor.putString("name", accountName)
-//            editor.putString("pass", accountPassword) //TODO:pass to md5  or token
-//            editor.putString("email", accountEmail)
             editor.apply()
             startActivity(intent)
         } else {

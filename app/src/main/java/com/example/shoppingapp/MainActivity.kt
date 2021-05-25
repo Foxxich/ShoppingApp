@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.shoppingapp.details.ProductDetailsActivity
@@ -100,6 +101,11 @@ class MainActivity : AppCompatActivity(), ProductsLoadListener, ICartLoadListene
                 startActivity(intent)
                 true
             }
+            R.id.game_item ->
+            {
+                //TODO:Ilya game
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -187,17 +193,12 @@ class MainActivity : AppCompatActivity(), ProductsLoadListener, ICartLoadListene
     }
 
     override fun clickedLong(productsModel: Int) {
-//        var name : String
-//        val user = Firebase.auth.currentUser
-//        if (user != null) {
-//            name = user.displayName.toString()
-//            Log.e("getCurrentUser", name)
-//        } else {
-//
-//        }
         val intent = Intent(this, ProductDetailsActivity::class.java).apply {
             putExtra("itemToShow", productsModel.toString())
+            putExtra("user", accountName)
         }
         startActivityForResult(intent, 2)
     }
+
+    fun cartShow(view: View) {}
 }
