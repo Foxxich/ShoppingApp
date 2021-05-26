@@ -7,11 +7,11 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.shoppingapp.details.ProductDetailsActivity
 import com.example.shoppingapp.eventbus.UpdateCartEvent
-import com.example.shoppingapp.listener.ICartLoadListener
 import com.example.shoppingapp.listener.ItemListener
 import com.example.shoppingapp.listener.ProductsLoadListener
 import com.example.shoppingapp.menu_activities.MapsActivity
@@ -29,11 +29,10 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 
-class MainActivity : AppCompatActivity(), ProductsLoadListener, ICartLoadListener,
+class MainActivity : AppCompatActivity(), ProductsLoadListener,
     ItemListener {
 
     lateinit var productsLoadListener: ProductsLoadListener
-    lateinit var iCartLoadListener: ICartLoadListener
     private var adapter: ProductsAdapter? = null
     private lateinit var accountName : String
     private var MY_PREFS_NAME = "USER"
@@ -41,14 +40,6 @@ class MainActivity : AppCompatActivity(), ProductsLoadListener, ICartLoadListene
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if(EventBus.getDefault().hasSubscriberForEvent(UpdateCartEvent::class.java)) {
-            EventBus.getDefault().removeStickyEvent(UpdateCartEvent::class.java)
-        }
-        EventBus.getDefault().unregister(this)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
@@ -90,7 +81,7 @@ class MainActivity : AppCompatActivity(), ProductsLoadListener, ICartLoadListene
                 preferences.edit().remove("name").apply()
                 preferences.edit().remove("pass").apply()
                 preferences.edit().remove("email").apply()
-                onBackPressed()
+                //TODO:Ilya - handle to LoginActivity
                 true
             }
             R.id.account_item ->
@@ -118,25 +109,31 @@ class MainActivity : AppCompatActivity(), ProductsLoadListener, ICartLoadListene
     }
 
     private fun countCartFRomFirebase() {
-        val cartModels : MutableList<CartModel> = ArrayList()
-        FirebaseDatabase.getInstance()
-                .getReference("Cart")
-                .child(accountName)
-                .addListenerForSingleValueEvent(object :ValueEventListener{
-                    override fun onCancelled(error: DatabaseError) {
-                        iCartLoadListener.onLoadCartFailed(error.message)
-                    }
+        FirebaseDatabase.getInstance().getReference("Cart").child(accountName).addValueEventListener(object : ValueEventListener {
 
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        for(cartSnapshot in snapshot.children) {
-                            val cartModel = cartSnapshot.getValue(CartModel::class.java)
-                            cartModel!!.key = cartSnapshot.key
-                            cartModels.add(cartModel)
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("onCancelled", " cancelled")
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                try {
+                    val badgeData = snapshot.getValue<CartModel>(CartModel::class.java)
+                    if (badgeData != null) {
+                        try {
+                            badge!!.setNumber(badgeData.quantity)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
-                        iCartLoadListener.onLoadCartSuccess(cartModels)
+                    } else {
+                        badge!!.setNumber(0)
+                        addNewCartToDatabase()
                     }
-
-                })
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        })
+        Toast.makeText(this, "TEXT", Toast.LENGTH_SHORT).show()
     }
 
     private fun loadProductsFromFirebase() {
@@ -166,15 +163,13 @@ class MainActivity : AppCompatActivity(), ProductsLoadListener, ICartLoadListene
     private fun init() {
         productsLoadListener = this
         productsLoadListener = this
-        iCartLoadListener = this
-
         val gridLayoutManager = GridLayoutManager(this, 2)
         recycler_drink.layoutManager = gridLayoutManager
         recycler_drink.addItemDecoration(SpaceItemDecoration())
     }
 
     override fun onProductsLoadSuccess(productsModelList: List<ProductsModel>?) {
-        adapter = ProductsAdapter(this,productsModelList!!, iCartLoadListener,this, accountName)
+        adapter = ProductsAdapter(this,productsModelList!!,this, accountName)
         recycler_drink.adapter = adapter
     }
 
@@ -182,14 +177,13 @@ class MainActivity : AppCompatActivity(), ProductsLoadListener, ICartLoadListene
         Snackbar.make(mainLayout,message!!, Snackbar.LENGTH_LONG).show()
     }
 
-    override fun onLoadCartSuccess(cartModelList: List<CartModel>) {
-        var cartSum = 0
-        for(cartModel in cartModelList) cartSum += cartModel.quantity
-        badge!!.setNumber(cartSum)
-    }
 
-    override fun onLoadCartFailed(message: String?) {
-        Snackbar.make(mainLayout,message!!, Snackbar.LENGTH_LONG).show()
+    private fun addNewCartToDatabase() {
+        val cartModel  = CartModel()
+        cartModel.key = "12"
+        cartModel.quantity = 0
+        cartModel.totalPrice = (0).toFloat()
+        FirebaseDatabase.getInstance().getReference("Cart").child(accountName).setValue(cartModel)
     }
 
     override fun clickedLong(productsModel: Int) {

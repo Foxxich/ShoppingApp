@@ -1,29 +1,32 @@
 package com.example.shoppingapp.details
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.shoppingapp.model.ProductsModel
+import com.example.shoppingapp.MainActivity
 import com.example.shoppingapp.R
+import com.example.shoppingapp.menu_activities.UserData
+import com.example.shoppingapp.model.ProductsModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.squareup.picasso.Picasso
 
 
 class ProductDetailsActivity : AppCompatActivity() {
 
     private var item: ProductsModel? = null
+    private lateinit var userName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_details)
         val message = intent.getStringExtra("itemToShow")
+        userName = intent.getStringExtra("user").toString()
         FirebaseDatabase.getInstance().getReference("Game").child(message!!).addValueEventListener(object : ValueEventListener {
 
             override fun onCancelled(error: DatabaseError) {
@@ -51,7 +54,7 @@ class ProductDetailsActivity : AppCompatActivity() {
     }
 
     private fun prepareActivityWithProductDetails(itemData: ProductsModel) {
-        Glide.with(this@ProductDetailsActivity)
+        Glide.with(this)
                 .load(itemData.image)
                 .into(findViewById(R.id.itemImageView))
         findViewById<TextView>(R.id.itemNameTextView).text = itemData.name
@@ -62,4 +65,14 @@ class ProductDetailsActivity : AppCompatActivity() {
     fun addToCart(view: View) { //item
 // TODO: Ilya - add to cart
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("userName", userName)
+        }
+        startActivity(intent)
+        finish()
+    }
+
 }
