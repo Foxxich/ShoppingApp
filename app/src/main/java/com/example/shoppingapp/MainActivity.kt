@@ -7,11 +7,9 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.shoppingapp.details.ProductDetailsActivity
-import com.example.shoppingapp.eventbus.UpdateCartEvent
 import com.example.shoppingapp.listener.ItemListener
 import com.example.shoppingapp.listener.ProductsLoadListener
 import com.example.shoppingapp.menu_activities.MapsActivity
@@ -24,9 +22,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 
 class MainActivity : AppCompatActivity(), ProductsLoadListener,
@@ -39,11 +34,6 @@ class MainActivity : AppCompatActivity(), ProductsLoadListener,
 
     override fun onStart() {
         super.onStart()
-        EventBus.getDefault().register(this)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public fun onUpdateCrtEvent(event:UpdateCartEvent) {
         countCartFRomFirebase()
     }
 
@@ -167,8 +157,8 @@ class MainActivity : AppCompatActivity(), ProductsLoadListener,
         recycler_drink.addItemDecoration(SpaceItemDecoration())
     }
 
-    override fun onProductsLoadSuccess(productsModelList: List<ProductsModel>?) {
-        adapter = ProductsAdapter(this,productsModelList!!,this, accountName)
+    override fun onProductsLoadSuccess(productsLoadListener: List<ProductsModel>?) {
+        adapter = ProductsAdapter(this,productsLoadListener!!,this, accountName)
         recycler_drink.adapter = adapter
     }
 
