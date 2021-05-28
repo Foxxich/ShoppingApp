@@ -93,6 +93,7 @@ class ProductDetailsActivity : AppCompatActivity() {
 
     private fun databaseAdd() {
         cartModel!!.quantity++
+        cartModel!!.totalPrice += item!!.price!!.toFloat()
         FirebaseDatabase.getInstance().getReference("Cart").child(userName).setValue(cartModel)
     }
 
