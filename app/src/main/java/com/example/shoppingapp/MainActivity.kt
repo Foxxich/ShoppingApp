@@ -133,7 +133,6 @@ class MainActivity : AppCompatActivity(), ProductsLoadListener,
                 }
             }
         })
-        Toast.makeText(this, "TEXT", Toast.LENGTH_SHORT).show()
     }
 
     private fun loadProductsFromFirebase() {
@@ -194,5 +193,10 @@ class MainActivity : AppCompatActivity(), ProductsLoadListener,
         startActivityForResult(intent, 2)
     }
 
-    fun cartShow(view: View) {}
+    fun cartShow(view: View) {
+        val intent = Intent(this, CartActivity::class.java).apply {
+            putExtra("user", accountName)
+        }
+        startActivityForResult(intent, 3)
+    }
 }

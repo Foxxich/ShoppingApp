@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CartApp">
-        <activity android:name=".menu_activities.UserData"></activity>
+        <activity android:name=".CartActivity"></activity>
+        <activity android:name=".menu_activities.UserData" />
         <activity android:name=".account.AccountActivity" />
         <activity android:name=".account.LoginActivity">
             <intent-filter>
@@ -45,7 +46,7 @@
         <activity
             android:name=".menu_activities.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
